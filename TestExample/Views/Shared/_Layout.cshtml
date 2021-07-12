@@ -1,0 +1,74 @@
+﻿
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Free Home Shoppe Website Template | Home :: w3layouts</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    @Styles.Render("~/Mycss")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/MyJs")
+</head>
+<body>
+    <!-- Begin Wrap -->
+    <div class="wrap">
+        <!-- Begin Header -->
+        @Html.Action("RenderHeader", "Home")
+        <!-- End Header -->
+        <!-- Begin Main -->
+        <div class="main">
+            @RenderBody();
+        </div>
+        <!-- End Main -->
+    </div>
+    <!-- End Wrap -->
+    <!-- Begin Footer -->
+    @Html.Partial("_Footer")
+
+    <!-- End Footer -->
+
+    @RenderSection("scripts",false)
+    <script>
+        var search = "";
+        var pageSize = 5;
+        var pageNumber = 1;
+        var categoryId = 0;
+
+        function Search(el) {
+            search = $(el).val();
+            LoadData();
+        }
+
+        function ChooseCate(Id) {
+            console.log("aloo");
+            categoryId = Id;
+            LoadData();
+        }
+
+        function ChangePageSize(Id) {
+            pageNumber = Id;
+            LoadData();
+        }
+
+        function LoadData() {
+            $.ajax({
+                url: '/Home/LoadData',
+                type: 'post',
+                dataType: 'html',
+                data: {
+                    search: search,
+                    pageNumber: pageNumber,
+                    categoryId: categoryId
+                },
+                success: function (res) {
+                    console.log(res);
+                    $('.main').html('');
+                    $('.main').append(res);
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
+
